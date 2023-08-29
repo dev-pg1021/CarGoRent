@@ -8,11 +8,11 @@ namespace CarGoRent.Entity
     {
 
         [Required]
-        [StringLength(50, MinimumLength = 5)]
+        [StringLength(50, MinimumLength = 1)]
         public string Fname { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 5)]
+        [StringLength(50, MinimumLength = 1)]
         public string Lname { get; set; }
 
         [Required]

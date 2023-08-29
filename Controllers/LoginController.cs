@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarGoRent.Controllers
 {
-    [Route("api/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -27,23 +26,57 @@ namespace CarGoRent.Controllers
         */
 
         // POST api/<LoginController>
-        [Route("/register")]
+        [Route("/api/login/register")]
         [HttpPost]
-        public Customer Post([FromBody] Customer value)
+        public IActionResult Post([FromBody] Customer value)
+        {
+            try
+            {
+                Customer customer = Service.LoginService.register(value);
+                return Ok(customer); // Return a 200 OK response with the customer object
+            }
+            catch (DuplicateEmailException)
+            {
+                return Conflict("Duplicate entry"); // Return a 409 Conflict response
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message); // Return a 500 Internal Server Error response
+            }
+        }
+
+
+
+        [Route("/api/login")]
+        [HttpPost]
+        public IActionResult Post([FromBody] Login value)
         {
             Customer customer = null;
+            try
+            {
+                customer = Service.LoginService.getCustByEmail(value.Email);
 
-            try {
-                customer = Service.LoginService.register(value);
-            }
-            catch (Exception e) { 
-                if(e.Equals("409")) { 
-                    HttpContext.Response.StatusCode = 409;
-                    return customer;
+                if (customer == null)
+                {
+                    // Invalid email
+                    return BadRequest(new { ErrorCode = "InvalidEmail", ErrorMessage = "The provided email is not valid." });
                 }
-                throw e;
+
+                // Basic password validation (not recommended in practice)
+                if (value.Password != customer.Password)
+                {
+                    // Invalid password
+                    return BadRequest(new { ErrorCode = "InvalidPassword", ErrorMessage = "The provided password is incorrect." });
+                }
+
+                // Authentication successful
+                return Ok(customer);
             }
-            return customer;
+            catch (Exception e)
+            {
+                Console.WriteLine("Some issue");
+                return StatusCode(500); // Internal Server Error
+            }
         }
 
         /*

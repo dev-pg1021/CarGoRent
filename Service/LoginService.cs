@@ -11,6 +11,7 @@ namespace CarGoRent.Service
         {
             SqlConnection con = new SqlConnection();
             con.ConnectionString = @"Data Source=(localdb)\ProjectModels;Initial Catalog=KTjune23;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            
             con.Open();
 
             try
@@ -31,16 +32,68 @@ namespace CarGoRent.Service
 
 
             }
-            catch(SqlException ex ) {
-                if (ex.Message.Contains(Constant.Constant.DuplicateEmailMsg)){
-                    throw new Exception("409");   
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2601 || ex.Number == 2627) // SQL Server unique constraint violation
+                {
+
+                    throw new DuplicateEmailException("409"); // Throwing the exception with default message
                 }
-                throw new Exception(ex.Message); 
+                throw new Exception(ex.Message);
             }
             catch (Exception ex) { throw; }
-            
+
             finally { con.Close(); }
             return usr;
         }
-    }
+
+        public static Customer getCustByEmail(string email)
+        {
+            Customer cust = new Customer();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = @"Data Source=(localdb)\ProjectModels;Initial Catalog=KTjune23;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
+            con.Open();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "Select * from Customer where Email = @Email";
+
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    cust.Fname = dr.GetString("Fname");
+                    cust.Lname = dr.GetString("Lname");
+                    cust.Contact = dr.GetString("Contact");
+                    cust.Email = dr.GetString("Email");
+                    cust.Password = dr.GetString("Password");
+
+                }
+                else
+                {
+                    cust = null;
+                }
+                dr.Close();
+                cmd.ExecuteNonQuery();
+            }
+            catch(SqlException s)
+            {
+                throw new Exception(s.Message);
+            }
+            catch(Exception ex) { throw; }
+            finally { con.Close() ; }
+
+            return cust;
+        }
+
+        
+    }   
 }
+

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent\\CarGoRent.csproj": {}
+    "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent_Repo\\CarGoRent\\CarGoRent.csproj": {}
   },
   "projects": {
-    "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent\\CarGoRent.csproj": {
+    "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent_Repo\\CarGoRent\\CarGoRent.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent\\CarGoRent.csproj",
+        "projectUniqueName": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent_Repo\\CarGoRent\\CarGoRent.csproj",
         "projectName": "CarGoRent",
-        "projectPath": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent\\CarGoRent.csproj",
+        "projectPath": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent_Repo\\CarGoRent\\CarGoRent.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent\\obj\\",
+        "outputPath": "F:\\cdac\\.net\\Final_cdac_Project\\CarGoRent_Repo\\CarGoRent\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
